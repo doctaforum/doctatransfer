@@ -1,0 +1,4 @@
+<form id="delete-form" method="post" action="{{ path('file_delete', {'id': file.id}) }}" onsubmit="return confirm('¿Estas seguro de que deseas eliminar el archivo?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ file.id) }}">
+    <button class="delete-button"><i class="fas fa-trash"></i></button>
+</form>

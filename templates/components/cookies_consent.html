@@ -1,0 +1,133 @@
+<script>
+    gdprCookieNotice({
+        locale: 'es', //cambiar por 'en' si la web es en inglés
+        timeout: 500, //Time until the cookie bar appears
+        expiration: 30, //This is the default value, in days
+        domain: '', //DEJAR EN BLANCO .
+        implicit: false, //Accept cookies on scroll
+        statement: 'https://www.doctaforum.org/--AvisoLegal-Cookies/Cookies-ES-2daCapa.php', //Link cookies en español
+        //statement: 'https://www.doctaforum.org/--AvisoLegal-Cookies/Cookies-EN-2daCapa.php', //Link cookies en inglés
+        performance: ['JSESSIONID'], //Cookies in the performance category.
+        analytics: ['ga'], //Cookies in the analytics category.
+        //   marketing: ['SSID'] //Cookies in the marketing category.
+    });
+</script>
+
+<!-- JS para cargar selectivamente Google Analytics según las preferencias del visitante -->
+<script>
+
+    //RELLENAR CON LOS DATOS DE TU SCRIPT DE GOOGLE ANALYTICS
+    function createAnalytics() {
+        let script = document.createElement('script');
+        script.src = "https://www.googletagmanager.com/gtag/js?id=X-XXXXXXXXX-XX";
+        script.async = true;
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'X-XXXXXXXXX-XX');
+    }
+
+    document.addEventListener('gdprCookiesEnabled', function (e) {
+        if (e.detail.analytics) {
+            sessionStorage.setItem("analytics", 1);
+            createAnalytics();
+        }else{
+            if (typeof sessionStorage.getItem("analytics") || sessionStorage.getItem("analytics") == 1) {
+                sessionStorage.removeItem("analytics");
+            }
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof sessionStorage.getItem("analytics") && sessionStorage.getItem("analytics") == 1) {
+            createAnalytics();
+        }
+    }, false);
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        let settings = document.querySelector(".gdpr-cookie-notice-nav-item-settings");
+        if (settings != null) {
+            settings.addEventListener("click", () => {
+                let btn = document.querySelector("a.gdpr-cookie-notice-modal-footer-item:nth-child(2)");
+                btn.addEventListener("click", () => {
+                    setTimeout(() => {
+                        document.querySelector(".gdpr-cookie-notice-modal-close").click();
+                    }, 500);
+                }, false);
+            }, false);
+        }
+    }, false);
+</script>
+
+<style>
+    .gdpr-cookie-notice-modal-cookie-title {
+        cursor: pointer !important;
+    }
+
+    .gdpr-cookie-notice-modal-footer-item {
+        font-size: 13px;
+    }
+
+    :root {
+    --primary: #009845;
+    --secondary: #fff;
+}
+
+.gdpr-cookie-notice {
+    background-color: var(--secondary);
+    border-top: 1px solid var(--primary);
+}
+
+.gdpr-cookie-notice-description, .gdpr-cookie-notice-nav-item-settings {
+    color: var(--primary);
+}
+
+.gdpr-cookie-notice-nav-item-settings:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+.gdpr-cookie-notice-modal-cookie-state {
+    color: var(--primary);
+}
+
+.gdpr-cookie-notice-nav-item-accept {
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+.gdpr-cookie-notice-nav-item-accept:hover {
+    color: var(--secondary);
+    text-decoration: underline;
+}
+
+.gdpr-cookie-notice-modal-footer-item, .gdpr-cookie-notice-modal-footer-item:hover {
+    background-color: var(--primary);
+    color: var(--secondary);
+    border-radius: 3px;
+}
+
+.gdpr-cookie-notice-modal-footer-item-statement, .gdpr-cookie-notice-modal-footer-item-statement:hover {
+    text-decoration: underline;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.gdpr-cookie-notice-modal-cookie-input:checked + .gdpr-cookie-notice-modal-cookie-input-switch {
+    background: var(--primary);
+    -webkit-box-shadow: inset 0px 0px 0px 1px var(--primary);
+    box-shadow: inset 0px 0px 0px 1px var(--primary);
+}
+
+.gdpr-cookie-notice-modal-footer-item{
+        font-size: 13px;
+}
+</style>

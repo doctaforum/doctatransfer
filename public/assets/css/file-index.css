@@ -1,0 +1,80 @@
+.center-container {
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+tbody tr:hover {
+    background-color: rgb(190, 253, 186) !important;
+}
+
+#files-table a, #files-table a:link, #files-table a:visited {
+    color: inherit;
+}
+
+.show-description p {
+    margin-bottom: 0;
+}
+
+.modal {
+    color: #000000;
+}
+
+.dataTables_filter > label, .dataTables_length > label {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.sorting_1 {
+    background-color: #5a586e !important;
+    color: white;
+}
+
+.dataTables_info {
+    font-size: 0.8em;
+}
+
+thead th {
+    font-weight: 100 !important;
+}
+
+.description-popover {
+    background-color: rgba(217, 217, 171, 0.808);
+    padding: 10px;
+    padding-bottom: 0;
+    border-radius: 5px;
+    color: #000000;
+    z-index: 100;
+    margin: 0 30px 30px 5px;
+    position: absolute;
+    text-align: left;
+}
+
+.datatable-actions > a {
+    transition: 0.2s ease-in-out;
+}
+
+.datatable-actions > a:first-child:hover {
+    transform: rotate(180deg);
+}
+
+.datatable-actions > a:nth-child(3):hover {
+    transform: rotate(-20deg);
+}
+
+.upload-file-button-container {
+    margin-top: 15px;
+}
+
+
+@media (max-width: 767.5px) {
+    .upload-file-button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .description-popover {
+        display: none;
+    }
+}

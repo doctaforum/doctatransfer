@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+    {# Custom styles #}
+    <link rel="stylesheet" href="{{ asset('assets/css/base.css') }}"/>
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <header class="header">
+        <div class="d-flex justify-content-between align-items-start px-5">
+            {% block header %}
+            <div class="pt-2">
+                <a href="{{ path('file_index') }}"><div class="header__logo" style="background-image: url({{ asset('media/website/doctaforum-logo-white.png') }});"></div></a>
+            </div>
+            <div class="header__navbar mx-4" style="width: 70%;">{% include "components/admin/admin_menu.html.twig" %}</div>
+            <div class="text-center text-light d-flex justify-content-end align-items-center pt-2 w-100">
+                <!-- <div class="header__profile-photo" style="background-image: url({{ asset('media/admins/user-default.png') }});"></div> -->
+                <a href="{{ path('admin_show', {'id': app.user.id}) }}"><p class="mb-0 px-3 text-white">{{ app.user.name }} {{ app.user.firstname }}</p></a>
+                <a href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt fa-2x text-white"></i></a>
+            </div>
+            {% endblock %}
+        </div>
+    </header>
+
+    <section class="pb-3">
+        <div class="container my-5">
+        {% block section %}{% endblock %}
+        </div>
+    </section>
+
+    <footer class="footer py-1 mt-5">
+        {% block footer %}
+        <div class="d-flex justify-content-center align-items-center">
+            <div><a href="#open-cookies" data-mdb-toggle="modal" data-mdb-target="#cookies-modal">Política de cookies</a></div>
+            <div class="px-2">|</div>
+            <div><a href="#open-legal_notice" data-mdb-toggle="modal" data-mdb-target="#legal_notice-modal">Aviso legal</a></div>
+        </div>
+        {% endblock %}
+    </footer>
+
+    {% include "components/legal_notice.html.twig" %}
+    {% include "components/cookies.html.twig" %}
+{% endblock %}

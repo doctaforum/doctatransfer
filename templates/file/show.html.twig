@@ -1,0 +1,236 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Archivo{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('assets/css/show-file.css') }}">
+{% endblock %}
+
+{% block javascriptInLine %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(() => {
+            document.getElementById('copy-button').addEventListener('click', () => {
+                var r = document.createRange();
+                r.selectNode(document.getElementById("download-link"));
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(r);
+                document.execCommand('copy');
+                window.getSelection().removeAllRanges();
+            })
+
+            const copyPopover = new mdb.Popover(document.getElementById('copy-button'));
+
+
+            let readMore = document.getElementById("read-more");
+            let description = document.getElementsByClassName('download-file__description')[0];
+            let completeDescription = document.getElementsByClassName('download-file__complete-description')[0];
+
+            if (readMore) {
+                readMore.addEventListener('click', () => {
+                    if (description.style.display != 'none') {
+                        description.style.display = 'none';
+                        completeDescription.style.display = 'block';
+                        readMore.innerHTML = '<u>Mostrar menos</u>';
+                    } else {
+                        description.style.display = 'block';
+                        completeDescription.style.display = 'none';
+                        readMore.innerHTML = '<u>Mostrar más</u>';
+                    }
+                }, false)
+            }
+
+            let pass = "{{ password }}";
+
+            const passPopover = new mdb.Popover(document.getElementById('copy-pass'));
+
+            let showed = false;
+            let hiddenPass = document.getElementById("password-text").innerHTML;
+
+            document.getElementsByClassName("show-pass").forEach(element => {
+                element.addEventListener("click", () => {
+                    if (!showed) {
+                        document.getElementById("password-text").innerHTML = pass;
+                        document.getElementsByClassName("show-pass").forEach(element => {
+                            element.innerHTML = "<i class='far fa-eye-slash text-primary'></i>";
+                        });
+                        showed = true;
+                    } else { 
+                        document.getElementById("password-text").innerHTML = hiddenPass;
+                        document.getElementsByClassName("show-pass").forEach(element => {
+                            element.innerHTML = "<i class='far fa-eye text-primary'></i>";
+                        });
+                        showed = false;
+                    }
+                })
+            })
+
+            document.getElementsByClassName("copy-pass").forEach(element => {
+                element.addEventListener("click", () => {
+                    navigator.clipboard.writeText(pass)
+                        .then(() => {
+
+                        })
+                        .catch(err => {
+                            console.log('Something went wrong', err);
+                        });
+                })
+            })
+        })
+    </script>
+{% endblock %}
+
+
+{% block section %}
+    <div class="center-container container-fluid pt-0">
+        <div class="section-top-header-page d-flex justify-content-between align-items-center w-100">
+            <div class="d-flex justify-content-start align-items-center">
+                <a href="{{ path('file_index') }}" class="section-top-header-page__return-button"><i class="fas fa-chevron-circle-left fa-2x"></i></a>
+    
+                <h1 class="center-container__title px-3">Archivo</h1>
+            </div>
+
+            <div class="d-flex justify-content-around align-items-center">
+                <a href="{{ path('file_edit', {'id': file.id}) }}" class="edit-button"><i class="fas fa-pen"></i></a>
+
+                <div class="mx-2">
+                {{ include('file/_delete_form.html.twig') }}
+                </div>
+
+                <div style="font-size: 0.85em;">
+                {{ include('file/_isActive_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex flex-column justify-content-center align-items-center">
+            <div class="file-url d-flex flex-column align-items-center my-3 mb-5">
+                <p class="info-row__title mb-0">URL:</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="{{ app.request.getSchemeAndHttpHost() }}{{ app.request.getBaseURL() }}/descargar/{{ file.id }}/{{ file.token }}" id="download-link" target="__blank">
+                        {{ app.request.getSchemeAndHttpHost() }}{{ app.request.getBaseURL() }}/descargar/{{ file.id }}/{{ file.token }}
+                    </a>
+
+                    <div
+                    id="copy-button"
+                    class="btn"
+                    tabindex="0"
+                    data-mdb-toggle="popover"
+                    data-mdb-trigger="focus"
+                    data-mdb-content="Copiado al portapapeles"
+                    >
+                    <i class="fas fa-copy fa-lg"></i>
+                    </div>
+                </div>
+                <div class="info-row align-items-baseline mt-3">
+                    <p class="info-row__title">Contraseña:</p>
+                    <p class="info-row__data">
+                    <div id="password-text">
+                        {% for i in 0..password|length %}
+                            •
+                        {% endfor %}
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="show-pass mx-2">
+                            <i class="far fa-eye text-primary"></i>
+                        </div>
+                        <div
+                                id="copy-pass"
+                                class="copy-pass"
+                                tabindex="0"
+                                data-mdb-toggle="popover"
+                                data-mdb-trigger="focus"
+                                data-mdb-content="Copiado al portapapeles"
+                        >
+                            <i class="fas fa-copy"></i>
+                        </div>
+                    </div>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mb-5">
+            <div class="row">
+                <div class="info-container col-12 col-lg-8 col-xl-9 p-3">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="info-row">
+                                <p class="info-row__title">Número de evento:</p>
+                                <p class="info-row__data">{{ file.eventNum }}</p>
+                            </div>
+
+                            <div class="info-row">
+                                <p class="info-row__title">Fecha de creación:</p>
+                                <p class="info-row__data">{{ file.createDate | date("d/m/Y - H:i:s") }}</p>
+                            </div>
+
+                            <div class="info-row">
+                                <p class="info-row__title">Fecha de expiración:</p>
+                                <p class="info-row__data">{{ file.expirationDate ? file.expirationDate | date("d/m/Y") : 'Ilimitado' }}</p>
+                            </div>
+
+                            <div class="info-row">
+                                <p class="info-row__title">Tamaño:</p>
+                                <p class="info-row__data">{{ filesize }} MB</p>
+                            </div>
+
+                            <div class="info-row">
+                                <p class="info-row__title">Extensión:</p>
+                                <p class="info-row__data">.{{ fileExtension }}</p>
+                            </div>
+
+                            <div class="info-row">
+                                <p class="info-row__title">Estado:</p>
+                                <p class="info-row__data">{{ file.isActive ? "<span class='text-success'>Disponible</span>" : "<span class='text-danger'>Bloqueado</span>"}}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div  class="d-flex justify-content-baseline align-items-start">
+                                <img src="{{ asset('media/website/rar_image.png') }}" alt="rar" style="width: 30px;">
+                                <div class="d-flex flex-column justify-content-center align-items-start mx-3">
+                                    <p class="m-0">{{ file.path | split('/')[1] }}</p>
+                                    <p style="font-size: 0.7em; color: rgb(78, 78, 78);">Created by <u>{{ file.admin.name }} {{ file.admin.firstname }}</u> - {{ file.createDate | date('d/m/Y') }}</p>
+                                </div>
+                            </div>
+                            <div class="download-file__complete-description">{{ file.description | raw }}</div>
+                            <div class="download-file__description">
+                                {{ file.description | raw }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="info-row">
+                        <p class="info-row__title">Numero de descargas:</p>
+                        <p class="info-row__data">{{ file.downloads | length }}</p>
+                    </div>
+
+                    <div class="info-row">
+                        <p class="info-row__title">Última descarga:</p>
+                        <p class="info-row__data">{{ lastDownload ? lastDownload | date("d/m/Y - H:i:s") : '' }}</p>
+                    </div>
+                </div>
+
+                <div class="file-list col-12 col-lg-4 col-xl-3 py-3 col-12">
+                    <p class="m-0" style="font-size: 1.2em;"><u>Lista de archivos:</u></p>
+                    <p style="color: rgb(164, 164, 164);">{{ fileNames | length }} {{ fileNames | length == 0 ? "archivo" : "archivos" }}</p>
+
+                    <div class="file-list__content">
+                        {% for name in fileNames %}
+                            <p class="mb-1">• {{ name }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+    </div>
+{% endblock %}

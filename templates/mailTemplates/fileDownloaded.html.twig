@@ -1,0 +1,11 @@
+{% extends "mailTemplates/fileDownloaded.html.twig" %}
+
+{% block section %}
+    <h1 class="bg-danger text-light">El archivo {{ file.id }} ha sido descargado</h1>
+
+    <h3>Evento:</h3>
+    <p>{{ file.event_num }}</p>
+
+    <h3>Descripción:</h3>
+    <p>{{ file.description }}</p>
+{% endblock %}

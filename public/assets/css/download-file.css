@@ -1,0 +1,183 @@
+/* IMPORT FONTS */
+@font-face {
+    font-family: Avenir;
+    src: url(../../assets/fonts/AvenirLTStd-Book.otf);
+}
+
+@font-face {
+    font-family: AvenirBlack;
+    src: url(../../assets/fonts/AvenirLTStd-Black.otf);
+}
+
+@font-face {
+    font-family: AvenirItalic;
+    src: url(../../assets/fonts/AvenirLTStd-BookOblique.otf);
+}
+
+
+/* CSS STYLES */
+.blocked-modal {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Avenir;
+}
+
+.blocked-modal__alert {
+    background-color: #eeeeee;
+    font-family: Avenir;
+    color: #000000;
+    box-shadow: 0px 0px 10px rgb(255, 255, 255);
+    max-width: 600px;
+}
+
+.blocked-modal__alert-title {
+    padding: 10px 20px;
+}
+
+.blocked-modal__alert-body {
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+.blocked-modal__alert-footer {
+    background-color: #e1e1e1;
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+.blocked-container {
+    filter: blur(6px);
+}
+
+.section {
+    padding-bottom: 30px;
+}
+
+.download-file {
+    width: 380px;
+    background-color: white;
+    padding: 15px;
+    box-shadow: 0px 0px 2px;
+    border-radius: 10px;
+    font-family: Avenir;
+}
+
+.download-file__description {
+    height: 100px;
+    overflow-y: scroll;
+    padding-right: 5px;
+}
+
+.download-file__description::-webkit-scrollbar {
+    width: 0.3em;
+}
+
+.download-file__description::-webkit-scrollbar-track {
+    box-shadow: none;
+}
+
+.download-file__description::-webkit-scrollbar-thumb {
+    background-color: #707070;
+    border-radius: 10px;
+    /*outline: 1px solid slategrey;*/
+}
+
+.download-file__complete-description {
+    display: none;
+}
+
+.download-file__description, .download-file__complete-description, .read-more {
+    font-size: 0.8em;
+    margin-bottom: 10px;
+}
+
+#starting-download-msg {
+    display: none;
+    font-size: 0.9em;
+}
+
+.file-info {
+    font-size: 0.8em;
+}
+
+.read-more {
+    color: rgb(140, 140, 140);
+    cursor: pointer;
+}
+
+#download-button {
+    color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    width: 100%;
+}
+
+.info-line > p {
+    margin-bottom: 5px;
+}
+
+.file-info__info {
+    margin: 0 10px;
+    color: rgb(140, 140, 140);
+}
+
+.info-line {
+    display: flex;
+}
+
+.colored-toast.swal2-icon-error {
+    background-color: #f27474 !important;
+}
+
+.colored-toast .swal2-title {
+    color: #ffffff;
+}
+
+#password_form input {
+    border: none;
+    width: 100%;
+}
+
+#password_form input:focus{
+    outline: none !important;
+}
+
+.input-container {
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+#show-password {
+    width: 20px; 
+    height:20px; 
+    cursor: pointer;
+}
+
+
+@media (max-width: 575px) {
+    .section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .download-file {
+        width: 350px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .blocked-modal {
+
+    }
+}

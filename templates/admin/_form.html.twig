@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.password) }}
+    <div>
+        <input class="form-control my-3" type="password" name="repeat-password" id="repeat-password" placeholder="Repetir contraseña" required>
+    </div>
+    {{ form_row(form.name) }}
+    {{ form_row(form.firstname) }}
+    {{ form_row(form.image) }}
+    <button class="btn btn-success">{{ button_label|default('Enviar') }}</button>
+{{ form_end(form) }}

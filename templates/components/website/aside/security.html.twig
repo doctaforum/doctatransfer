@@ -1,0 +1,29 @@
+<div class="d-flex justify-content-between align-items-start border-bottom">
+    <h2 class="d-flex">
+        <div class="aside__back-button">
+            <i class="fas fa-angle-left" style="cursor: pointer;"></i> 
+        </div>
+        <div class="px-2">
+            Seguridad
+        </div>
+    </h2>
+    <div class="aside__close-button" style="cursor: pointer;">
+        <i class="fas fa-times fa-lg"></i>
+    </div>
+</div>
+
+<div id="aside__body" class="aside__body">
+    <div class="mt-5">
+        <div id="warning-response"></div>
+        <form id="edit-security-form" action="{{ path('edit-security-info', {'admin': app.user.id}) }}" method="post">
+            <input type="password" name="last-password" id="" class="form-control" placeholder="Contraseña antigua">
+            <input type="password" name="new-password" id="" class="form-control" placeholder="Contraseña nueva">
+            <input type="password" name="repeat-password" id="" class="form-control" placeholder="Repetir contraseña">
+            <input type="submit" value="Guardar" id="" class="btn btn-dark">
+        </form>
+
+        <form id="edit-picture-form" action="{{ path('edit-profile-picture', {'admin': app.user.id}) }}" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" id="edit-picture-form__file-input" class="d-none">
+        </form>
+    </div>
+</div>

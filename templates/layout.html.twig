@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    {% block stylesheets %}
+        {{ parent() }}
+
+        <link rel="stylesheet" href="{{ asset('assets/css/layout.css') }}">
+    {% endblock %}
+
+    <style>
+        .aside__icon-profile, .profile-icon {
+            background-image: url({{ asset('media/admins/'~app.user.image) }});
+        }
+    </style>
+
+    <header>
+        {% include "components/website/nav.html.twig" %}
+    </header>
+
+    <section class="section">
+    {% block section %}{% endblock %}
+    </section>
+
+    <aside id="aside" class="aside">
+        
+    </aside>
+
+    {% include "components/website/aside/asideJavascript.html.twig" %}
+{% endblock %}

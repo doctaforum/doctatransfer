@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="robots" content="noindex">
+        
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('media/website/favicon-doctaforum.png') }}">
+
+        <html lang="es-ES" xml:lang="es-ES" xmlns="http://www.w3.org/1999/xhtml"></html>
+
+        {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+        {% block stylesheets %}
+            {#{{ encore_entry_link_tags('app') }}#}
+            <link rel="shortcut icon" href="#">
+            <link rel="stylesheet" href="{{ asset('libraries/MDB/css/mdb.min.css') }}"/>
+            <link rel="stylesheet" href="{{ asset('libraries/FontAwesome/css/all.css') }}"/>
+            {# <link rel="stylesheet" href="{{ asset('libraries/jQuery/css/datatables.min.css') }}"> #}
+            
+            <link rel="stylesheet" href="{{ asset('assets/css/file-index.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('libraries/DataTables/datatables.min.css') }}"/>
+        {% endblock %}
+
+        {% block javascripts %}
+            {#{{ encore_entry_script_tags('app') }}#}
+            <script src="{{ asset('libraries/jQuery/js/jquery.min.js') }}"></script>
+            <script src="{{ asset('libraries/MDB/js/mdb.min.js') }}"></script>
+            {# <script src="{{ asset('libraries/jQuery/js/datatables.min.js') }}"></script> #}
+            {# <script src="{{ asset('libraries/jQuery/js/datatables-select.min.js') }}"></script> #}
+            <script src="{{ asset('libraries/FontAwesome/js/all.js') }}"></script>
+            <script src="{{ asset('libraries/SweetAlert/sweetalert.all.min.js') }}"></script>
+
+            <script type="text/javascript" src="{{ asset('libraries/DataTables/datatables.min.js') }}"></script>
+        {% endblock %}
+
+        {% block cssInLine %}{% endblock %}
+
+        {% block javascriptInLine %}{% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>

@@ -1,0 +1,98 @@
+{% extends 'admin_layout.html.twig' %}
+
+{% block title %}Descargas{% endblock %}
+
+{% block javascriptInLine %}
+    <script>
+        $(document).ready( function () {
+            document.getElementById("navbar__downloads").classList.add("active");
+
+            $('#admin-panel-table').DataTable();
+
+            let showDescription = document.getElementsByClassName('show-description');
+
+            showDescription.forEach(element => {
+                element.addEventListener('mouseover', e => {
+                    let description = element.dataset.description;
+
+                    let span = document.createElement("span");
+                    span.innerHTML = description;
+                    span.classList.add('description-popover');
+
+                    e.currentTarget.after(span);
+                });
+
+                element.addEventListener('mouseout', e => {
+                    document.getElementsByClassName('description-popover').forEach(element => {
+                        element.remove();
+                    })
+                });
+
+                element.addEventListener('click', () => {
+                    let description = element.dataset.description;
+
+                    document.getElementById('modal-description__body').innerHTML = description;
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block cssInLine %}
+    <style>
+        .description-popover {
+            background-color: rgba(217, 217, 171, 0.808);
+            padding: 10px;
+            border-radius: 5px;
+            color: #000000;
+            z-index: 100;
+            margin: 15px 30px 30px 5px;
+            position: absolute;
+            text-align: left;
+        }
+
+        .custom-select {
+            margin: 0 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block section %}
+    <h1>Download index</h1>
+
+    <table class="table text-center" id="admin-panel-table">
+        <thead class="text-white" style="background-color: #009845;">
+            <tr>
+                <th>Id</th>
+                <th>Evento archivo</th>
+                <th>Descripción archivo</th>
+                <th>Fecha descarga</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for download in downloads|reverse %}
+            <tr>
+                <td>{{ download.id }}</td>
+                <td>{{ download.file.eventNum }}</td>
+                <td>
+                    <a href="#" 
+                    class="show-description" 
+                    data-mdb-toggle="modal" 
+                    data-mdb-target="#modal-description" 
+                    data-description="{{ download.file.description }}"
+                    >
+                        <i class="fas fa-file"></i>
+                    </a>
+                </td>
+                <td>{{ download.date ? download.date|date('Y-m-d') : '' }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No se encontraro registros</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% include "components/website/file-description_modal.html.twig" %}
+{% endblock %}

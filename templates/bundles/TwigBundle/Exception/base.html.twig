@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block cssInLine %}
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: url({{asset('media/website/doctaforum-background.png')}});
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #ffffff;
+        }
+    </style>
+{% endblock %}

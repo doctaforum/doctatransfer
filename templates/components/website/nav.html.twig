@@ -1,0 +1,43 @@
+<div class="d-block d-lg-flex justify-content-between align-items-center mx-0 mx-md-3 mx-lg-5">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+                <a href="{{ path('home') }}"><img src="{{ asset('media/website/client/docta_transfer_logo.png') }}" alt="doctaforum" class="navbar__logo py-2"></a>
+                <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-mdb-toggle="collapse"
+                        data-mdb-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                >
+                    <i class="fas fa-bars"></i>
+                </button>
+            <div class="collapse navbar-collapse mx-lg-5 text-center text-lg-left" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item d-lg-none mt-3">
+                        <div class="profile-icon m-auto" style="cursor: pointer"></div>
+                        <p class="m-0 mt-2 text-white" style="font-size: 0.9em;">{{ app.user.name }} {{ app.user.firstname }}</p>
+                    </li>
+
+                    <hr>
+
+                    <li class="nav-item">
+                        <a id="navbar__files" class="nav-link" href="{{ path('file_index') }}">Mis archivos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="navbar__create-file" class="nav-link" href="{{ path('file_new') }}">Subir archivo</a>
+                    </li>
+                    <li class="nav-item navbar__close-session">
+                        <a class="nav-link" href="{{ path('app_logout') }}">Cerrar sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-icon-container d-none d-lg-flex align-items-center d-lg-block py-2">
+        <p class="m-0 text-white px-3" style="font-size: 0.9em;">{{ app.user.name }} {{ app.user.firstname }}</p>
+        <div class="profile-icon d-none d-lg-block" style="cursor: pointer"></div>
+    </div>
+</div>

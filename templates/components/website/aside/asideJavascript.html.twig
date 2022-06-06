@@ -1,0 +1,177 @@
+<script>
+    window.onload = () => {
+        //VARIABLES
+        let aside = document.getElementById('aside');
+        let profileIcon = document.getElementsByClassName('profile-icon');
+        let closeButton = document.getElementsByClassName('aside__close-button');
+
+        //When profile icon(in header) is clicked, we open aside and load index
+        profileIcon.forEach(element => {
+            element.addEventListener('click', () => {
+                openAside();
+                goToIndex();
+            })
+        })
+
+
+        //OPEN ASIDE
+        function openAside(params) {
+            aside.animate([
+                {
+                    transform: 'translateX(-410px)',
+                }
+            ], {
+                duration: 400,
+                fill: 'forwards'
+            });
+        }
+
+
+        //GET ASIDE HTML INDEX
+        function goToIndex() {
+            let url = "{{ path('profile_index') }}";
+            
+            getHTML(url, response => {
+                aside.innerHTML = response;
+
+                goToProfile();
+                goToSecurity();
+            })
+        }
+
+    
+        //GET ASIDE HTML PROFILE
+        //When profile option is clicked, we load profile and its features
+        function goToProfile() {
+            let url = "{{ path('edit-profile') }}";
+            let formUrl = "{{ path('edit-profile-info', {'admin': app.user.id}) }}";
+
+            document.getElementById('edit-profile').addEventListener("click", () => {
+                getHTML(url, response => {
+                    aside.innerHTML = response;
+
+                    document.getElementById('aside__icon-profile').addEventListener('click', () => {
+                        document.getElementById('edit-picture-form__file-input').click();
+                    })
+                    
+                    document.getElementById('edit-picture-form__file-input').addEventListener('change', () => {
+                        document.getElementById('edit-picture-form').submit();
+                    })
+
+                    document.getElementById('edit-profile-form').addEventListener('submit', e => {
+                        e.preventDefault();
+
+                        sendPostRequest(formUrl, new FormData(document.getElementById('edit-profile-form')));
+                    })
+                })
+            })
+        }
+
+
+        //GET ASIDE HTML SECURITY
+        //When security option is clicked, we load security and its features
+        function goToSecurity() {
+            let url = "{{ path('edit-security') }}";
+            let formUrl = "{{ path('edit-security-info', {'admin': app.user.id}) }}";
+
+            document.getElementById('edit-security').addEventListener("click", () => {
+                getHTML(url, response => {
+                    aside.innerHTML = response;
+
+                    document.getElementById('edit-security-form').addEventListener('submit', e => {
+                        e.preventDefault();
+
+                        sendPostRequest(formUrl, new FormData(document.getElementById('edit-security-form')));
+                    })
+                })
+            })
+        }
+
+
+        //BACK TO INDEX
+        function backToIndex() {
+            document.getElementsByClassName('aside__back-button').forEach(element => {
+                element.addEventListener('click', () => {
+                    goToIndex();
+                })
+            })
+        }
+
+        
+        //CLOSE ASIDE
+        function closeAside() {
+            closeButton.forEach(element => {
+                element.addEventListener('click', () => {
+                    aside.animate([
+                        {
+                            transform: 'translateX(410px)',
+                        }
+                    ], {
+                        duration: 400,
+                        fill: 'forwards'
+                    });
+                })
+            });
+        }
+
+
+        //GET HTML
+        function getHTML(url, successFunction) {
+            loading();
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                dataType: 'html',
+                success: successFunction,
+                error: function(error) {
+                    console.log("Ha habido un error");
+                    console.log(error);
+                },
+                complete: function() {
+                    backToIndex();
+                    closeAside();
+                }
+            })
+        }
+
+
+        //Send data to symfony controllers
+        function sendPostRequest(url, data) {
+            $.ajax({
+                url: url,
+                data: data,
+                type: 'post',
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (!response.success) {
+                        document.getElementById('warning-response').innerHTML = response.msg;
+                        document.getElementById('warning-response').style.display = "block";
+                    } else {
+                        document.getElementById('aside__body').innerHTML = 
+                            "<div class='success-response'>"+
+                                "La información se guardó correctamente"+
+                            "</div>";
+                    }
+                },
+                error: function(error) {
+                    console.log("Ha habido un error");
+                    console.log(error);
+                }
+            })
+        }
+
+
+        function loading() {
+            aside.innerHTML = 
+                "<div class='loading'>" +
+                    "<div class='spinner-border' role='status'>" +
+                        "<span class='visually-hidden'>Loading...</span>" +
+                    "</div>" +
+                "</div>";
+            ;
+        }
+    }
+</script>

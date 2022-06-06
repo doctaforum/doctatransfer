@@ -1,0 +1,22 @@
+<form id="disable-form" method="post" action="{{ path('file_disable', {'id': file.id}) }}" onsubmit="return confirm('¿Estas seguro de que deseas {% if file.isActive %}bloquear{% else %}desbloquear{% endif %} el archivo?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('disable' ~ file.id) }}">
+    <button class="disable-button d-flex flex-column alig-items-center p-0" style="border: none; background: inherit;">
+        {% if file.isActive %}
+            bloquear
+        {% else %}
+            desbloquear
+        {% endif %}
+    </button>
+</form>
+
+<style>
+    .disable-button {
+        color: blue;
+        font-size: 0.9em;
+        transition: 0.3s ease-in-out;
+    }
+
+    .disable-button:hover {
+        color: rgb(0, 15, 184);
+    }
+</style>

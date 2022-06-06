@@ -1,0 +1,21 @@
+{{ form_start(form, {'attr': {'id': 'file_form'}}) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-success file-form-button"><i class="fas fa-upload"></i> &nbsp{{ button_label|default('Subir') }}</button>
+{{ form_end(form) }}
+
+<div id="show-error"></div>
+
+<div class="loading-window">
+    <p>Subiendo archivos al servidor...</p>
+    <div class="spinner-grow text-light" style="width: 100px; height: 100px;" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<script>
+    $(document).ready(() => {
+        document.getElementById("file_form").addEventListener("submit", e => {
+            $('.loading-window').css("display", "flex");
+        })
+    })
+</script>

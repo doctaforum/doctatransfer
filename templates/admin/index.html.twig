@@ -1,0 +1,77 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Admin panel{% endblock %}
+
+{% block javascriptInLine %}
+    {{ parent() }}
+    
+    <script>
+        $(document).ready( function () {
+            $('#admin-panel-table').DataTable({
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ resultados",
+                    "info":       "Mostrando _START_ a _END_ de _TOTAL_ resultados",
+                    "infoEmpty":  "Mostrando 0 a 0 de 0 resultados",
+                    "search":     "Buscar:",
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Último",
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block section %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Admin panel</h1>
+        {#<a href="{{ path('generar-excel', {className: "Admin", excluded: "password-sep-creation_date"}) }}">#}
+        <a href="{{ path('admin-excel') }}">
+            <button class="btn btn-success"><i class="fas fa-file-excel"></i> excel</button>
+        </a>
+    </div>
+
+    <table class="table text-center display responsive nowrap" id="admin-panel-table" style="width: 100%;">
+        <thead class="text-white" style="background-color: #009845;">
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Fecha registro</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for admin in admins %}
+            <tr {% if admin.isActive != true %} style="background-color: #ffcfcb;" {% endif %}>
+                <td><a href="{{ path('admin_show', {'id': admin.id}) }}">{{ admin.name }} {{ admin.firstname }}</a></td>
+                <td>{{ admin.email }}</td>
+                <td>{{ admin.roles ? admin.roles|json_encode : '' }}</td>
+                <td>{{ admin.creationDate ? admin.creationDate|date('d-m-Y / H:i') : '' }}</td>
+                <td class="h5">
+                    <div class="d-flex justify-content-around align-items-center">
+                        <a href="{{ path('admin_show', {'id': admin.id, edit: true}) }}"><i class="fas fa-pencil-alt text-warning mr-3"></i></a>
+                        
+                        {% if admin.isActive %}
+                            <a href="{{ path('admin_disable', {'id': admin.id}) }}"><i class="fas fa-user-slash"></i></a>
+                        {% else %}
+                            <a href="{{ path('admin_enable', {'id': admin.id}) }}"><i class="fas fa-user text-success"></i></a>
+                        {% endif %}
+
+                        {% include "admin/_delete_form.html.twig" %}
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">No se encontraron registros</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_new') }}"><button class="btn btn-primary"><i class="fas fa-user-plus"></i> Registrar admin</button></a>
+{% endblock %}

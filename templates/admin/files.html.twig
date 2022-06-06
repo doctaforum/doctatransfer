@@ -1,0 +1,159 @@
+{% extends 'admin_layout.html.twig' %}
+
+{% block title %}File index{% endblock %}
+
+{% block javascriptInLine %}
+    <script>
+        $(document).ready( function () {
+            document.getElementById("navbar__files").classList.add("active");
+
+            $('#admin-panel-table').DataTable({});
+
+
+            let showDescription = document.getElementsByClassName('show-description');
+
+            showDescription.forEach(element => {
+                element.addEventListener('mouseover', e => {
+                    let description = element.dataset.description;
+
+                    let span = document.createElement("span");
+                    span.innerHTML = description;
+                    span.classList.add('description-popover');
+
+                    e.currentTarget.after(span);
+                });
+
+                element.addEventListener('mouseout', e => {
+                    document.getElementsByClassName('description-popover').forEach(element => {
+                        element.remove();
+                    })
+                });
+
+                element.addEventListener('click', () => {
+                    let description = element.dataset.description;
+
+                    document.getElementById('modal-description__body').innerHTML = description;
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block cssInLine %}
+    <style>
+        .description-popover {
+            background-color: rgba(217, 217, 171, 0.808);
+            padding: 10px;
+            border-radius: 5px;
+            color: #000000;
+            z-index: 100;
+            margin: 15px 30px 30px 5px;
+            position: absolute;
+            text-align: left;
+        }
+
+        .delete-button {
+            font-size: 1.2em;
+            background: none;
+            border: none;
+            color: red;
+            padding: 0;
+        }
+
+        .custom-select {
+            margin: 0 5px;
+        }
+
+        .blocked {
+            background-color: rgba(255, 0, 0, 0.5) !important;
+            color: white;
+        }
+
+        .deleted {
+            background-color: rgba(0, 0, 0, 0.638) !important;
+            color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block section %}
+    <div>
+        <h1>Archivos subidos</h1>
+
+        <table class="table text-center display responsive" id="admin-panel-table" style="width: 100%;">
+            <thead class="text-white" style="background-color: #009845;">
+                <tr>
+                    <th></th>
+                    <th>Event_num</th>
+                    <th>Uploaded by</th>
+                    <th>Description</th>
+                    <th>Create_date</th>
+                    <th>Expiration_date</th>
+                    <th>Downloads</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% set num = 1 %}
+
+            {% for file in files|reverse %}
+                <tr class="{% if file.isDeleted %}deleted{% elseif file.isActive != true %}blocked{% endif %}">
+                    <td>{{ num }}</td>
+                    <td>{{ file.eventNum }}</td>
+                    <td>{{ file.admin.name }} {{ file.admin.firstname }}</td>
+                    <td>
+                        <a href="#" 
+                        class="show-description" 
+                        data-mdb-toggle="modal" 
+                        data-mdb-target="#modal-description" 
+                        data-description="{{ file.description }}"
+                        >
+                            <i class="fas fa-file"></i>
+                        </a>
+                    </td>
+                    <td>{{ file.createDate ? file.createDate|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ file.expirationDate ? file.expirationDate|date('Y-m-d') : 'Ilimitado' }}</td>
+                    <td>{{ file.downloads | length }}</td>
+                    <td>
+                        <div class="d-flex justify-content-center align-items-center datatable-actions">
+                            <a href="{{ path('file_show', {'id': file.id}) }}">
+                                <i class="fas fa-eye fa-lg"></i>
+                            </a>
+                            <a href="{{ path('file_edit', {'id': file.id}) }}" class="mx-3">
+                                <i class="fas fa-pen fa-lg text-warning"></i>
+                            </a>
+                            {% if file.isDeleted != true %}
+                                {% include "file/_delete_form.html.twig" %}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+
+                {% set num = num + 1 %}
+            {% else %}
+                <tr>
+                    <td colspan="8">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="upload-file-button-container d-flex flex-column-reverse flex-sm-row justify-content-between align-items-center">
+            <a href="{{ path('file_new') }}">
+                <button class="btn btn-success"><i class="fas fa-plus"></i>&nbsp; Subir archivo</button>
+            </a>
+            <div>
+                <div class="d-flex align-items-center" style="font-size: 0.75em;">
+                    <div style="width: 9px; height: 9px;" class="bg-danger mx-2"></div>
+                    <div class="text-danger" style="line-height: 0.5;">Archivos bloqueados</div>
+                </div>
+                <div class="d-flex align-items-center mb-4 mb-sm-0 my-2" style="font-size: 0.75em;">
+                    <div style="width: 9px; height: 9px;" class="bg-dark mx-2"></div>
+                    <div class="text-dark" style="line-height: 0.5;">Archivos eliminados</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include "components/website/file-description_modal.html.twig" %}
+{% endblock %}

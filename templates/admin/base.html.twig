@@ -1,0 +1,10 @@
+{% extends "admin_layout.html.twig" %}
+
+{% block javascriptInLine %}
+    {{ parent() }}
+    <script>
+        $(document).ready( function () {
+            document.getElementById("navbar__admins").classList.add("active");
+        });
+    </script>
+{% endblock %}

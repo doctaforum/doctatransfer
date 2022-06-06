@@ -1,0 +1,20 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Registrar admin{% endblock %}
+
+{% block section %}
+
+    {% if formError is defined %}
+    <div class="py-2 px-4 bg-danger text-white my-5" style="border-left: 5px #A80000 solid; font-size: 0.8em;">
+        <p class="m-0">{{ formError }}</p>
+    </div>
+    {% endif %}
+    
+    <a href="{{ path('admin_index') }}"><i class="fas fa-arrow-left fa-3x text-success"></i></a>
+
+    <h1 class="text-center">Registrar admin</h1>
+
+    <div class="d-flex justify-content-center">
+        {{ include('admin/_form.html.twig') }}
+    </div>
+{% endblock %}

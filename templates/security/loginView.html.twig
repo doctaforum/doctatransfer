@@ -1,0 +1,28 @@
+{% extends "admin_layout.html.twig" %}
+
+{% block title %}Login{% endblock %}
+
+{% block cssInLine %}
+    <style>
+        body {
+            background-color: #FFFFF5 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="form-container d-flex justify-content-center align-items-center">
+        <form method="post" class="login-form text-center">
+
+            <div class="title-container">
+                <img src="{{ asset('media/website/doctaforum-logo-white.png') }}" class="img-fluid">
+            </div>
+
+            <div class="form-body d-flex flex-column justify-content-between">
+                {% include "security/login.html.twig" %}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,287 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Descargar archivo{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('assets/css/download-file.css') }}">
+    <link rel="stylesheet" href="{{ asset('libraries/GDPR/dist/style.css') }}"/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('libraries/GDPR/dist/script.js') }}"></script>
+    <script src="{{ asset('libraries/GDPR/src/langs/es.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-mdb-backdrop="static"
+  data-mdb-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+  style="z-index: 10000;"
+>
+  <div class="modal-dialog" style="z-index: 10;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Contraseña</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="password_form" method="post">
+            <div class="input-container d-flex align-items-center border">
+                <input id="password_form__password" type="password" name="password" placeholder="Introduce aquí tu contraseña"/>
+                <div id="show-password">
+                    <i class="fas fa-eye"></i>
+                </div>
+            </div>
+            <div class="w-100 d-flex justify-content-end mt-2 pt-3">
+                <input id="download-modal-button" type="submit" class="btn btn-sm btn-success" value="Descargar" />
+            </div>
+        </form>
+
+        <div id="download-error" class="pt-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <p id="download-error__msg" class="my-0 mx-3 text-danger" style="font-size: 0.8em;"></p>
+            </div>
+        </div>
+
+        <div id="starting-download-msg" class="pt-3">
+            <div class="d-flex align-items-center">
+                <div class="spinner-border text-primary" role="status" style="width: 1.3em; height: 1.3em;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="my-0 mx-3">Iniciando la descarga...</p>
+            </div>
+        </div>
+
+        <div class="file-info mt-3">
+            <p><i>Si el navegador le muestra esta imagen, pulse permitir antes de inicar la descarga</i></p>
+            <div class="d-flex justify-content-center">
+                <img src="{{ asset('media/website/client/docta_transfer_imagen_ayuda.png') }}" class="border rounded" style="width: 250px;">
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Carousel wrapper -->
+<div id="carouselMaterialStyle" class="carousel slide carousel-fade" data-mdb-ride="carousel" data-interval="500">
+  <!-- Inner -->
+  <div class="carousel-inner rounded-5 shadow-4-strong">
+    <!-- Single item -->
+    <div class="carousel-item active">
+        <div style="position: fixed; width: 100vw; height: 100vh; background-image: url({{ asset('media/website/client/docta_transfer_img_001.png') }}); background-position: center center; background-size: cover;"></div>
+    </div>
+
+    <!-- Single item -->
+    <div class="carousel-item">
+      <div style="position: fixed; width: 100vw; height: 100vh; background-image: url({{ asset('media/website/client/docta_transfer_img_002.png') }}); background-position: center center; background-size: cover;"></div>
+    </div>
+
+    <!-- Single item -->
+    <div class="carousel-item">
+        <div style="position: fixed; width: 100vw; height: 100vh; background-image: url({{ asset('media/website/client/docta_transfer_img_003.png') }}); background-position: center center; background-size: cover;"></div>
+    </div>
+
+    <!-- Single item -->
+    <div class="carousel-item">
+        <div style="position: fixed; width: 100vw; height: 100vh; background-image: url({{ asset('media/website/client/docta_transfer_img_004.png') }}); background-position: center center; background-size: cover;"></div>
+    </div>
+</div>
+
+<div style="position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 100%">
+    <header class="header mx-2 mx-sm-5 my-3">
+        <img src="{{ asset('media/website/client/docta_transfer_logo.png') }}" class="mb-1">
+    </header>
+
+    <section class="section mx-2 mx-sm-5">
+        <div class="download-file">
+            <div class="d-flex flex-column align-items-center">
+                <p class="m-0" style="font-weight: bold; font-family: Avenir; font-size: 0.9em;">Powered by:</p>
+                <img src="{{ asset('media/website/logo_docta.png') }}" alt="Doctaforum">
+            </div>
+
+            <hr>
+
+            <div class="py-2">
+                <div  class="d-flex justify-content-baseline align-items-start">
+                    <img src="{{ asset('media/website/rar_image.png') }}" alt="rar" style="width: 30px;">
+                    <div class="d-flex flex-column justify-content-center align-items-start mx-3">
+                        <p class="m-0" style="font-family: AvenirBlack; font-size: 0.9em;">{{ file.path | split('/')[1] }}</p>
+                        <p style="font-size: 0.7em; color: rgb(140, 140, 140);">Creado por <u>Doctaforum</u> - {{ file.createDate | date('d/m/Y') }}</p>
+                    </div>
+                </div>
+
+                <div class="download-file__complete-description">{{ file.description | raw }}</div>
+
+                <div class="download-file__description">
+                    {{ (file.description) | raw }}
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center py-3">
+                <div id="download-button" class="btn btn-success" data-mdb-toggle="modal" data-mdb-target="#staticBackdrop"><i class="fas fa-download"></i>&nbsp&nbsp Descargar</div>
+            </div>
+
+            <hr>
+
+            <div class="file-info">
+                <div class="info-line">
+                    <p style="font-family: AvenirBlack;">Número de archivos: </p>
+                    <p class="file-info__info">{{ numberOfFiles }}</p>
+                </div>
+                <div class="info-line">
+                    <p style="font-family: AvenirBlack;">Extensión: </p>
+                    <p class="file-info__info">.{{ fileExtension }}</p>
+                </div>
+                <div class="info-line">
+                    <p style="font-family: AvenirBlack;">Tamaño: </p>
+                    <p class="file-info__info">{{ fileSize }} MB</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    window.onload = () => {
+        let path = "{{ path('file_download', {'id': file.id}) }}";
+        let token = "{{ token }}";
+
+        document.getElementById("password_form").addEventListener('submit', e => {
+            e.preventDefault();
+
+            let formData = new FormData(document.getElementById("password_form"));
+            formData.append("token", token);
+
+            const options = {
+                method: "POST",
+                body: formData,
+                headers: {
+                    // 'Content-Type': 'application/json',
+                    // 'dataType': 'json',
+                }
+            }
+
+            startingDownload();
+
+            fetch(path, options)
+                .then(response => response.text())
+                .then(data => {
+                    let response = JSON.parse(data);
+
+                    if (!response.success) {
+                        document.getElementById("download-error__msg").innerHTML = response.msg;
+
+                        document.getElementById("starting-download-msg").style.display = "none";
+                        document.getElementById("download-modal-button").removeAttribute("disabled");
+                        return false;
+                    }
+
+                    let files = response.files;
+
+                    files.forEach(element => {
+                        var link = document.createElement("a");
+                        link.download = element;
+                        link.href = "../../media/transfer_files/tmp/"+element;
+                        link.click();
+                    })
+
+                    document.getElementById("password_form__password").value = "";
+
+                    responseHasArrived();
+                })
+                .catch(err => {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-right',
+                        iconColor: '#ffffff',
+                        customClass: {
+                            popup: 'colored-toast'
+                        },
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true
+                    })
+
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Lo sentimos, hubo un error',
+                    })
+
+                    console.log("Error: " + err);
+                    responseHasArrived();
+                });
+        })
+
+
+        let readMore = document.getElementById("read-more");
+        let description = document.getElementsByClassName('download-file__description')[0];
+        let completeDescription = document.getElementsByClassName('download-file__complete-description')[0];
+
+        if (readMore) {
+            readMore.addEventListener('click', () => {
+                if (description.style.display != 'none') {
+                    description.style.display = 'none';
+                    completeDescription.style.display = 'block';
+                    readMore.innerHTML = '<u>Mostrar menos</u>';
+                } else {
+                    description.style.display = 'block';
+                    completeDescription.style.display = 'none';
+                    readMore.innerHTML = '<u>Mostrar más</u>';
+                }
+            }, false)
+        }
+
+
+        let showPassButton = document.getElementById("show-password");
+        let passInput = document.getElementById('password_form__password');
+
+        let showed = false;
+
+        showPassButton.addEventListener('click', () => {
+            if (!showed) {
+                passInput.setAttribute("type", "text");
+                showPassButton.innerHTML = "<i class='fas fa-eye-slash'></i>";
+                showed = true;
+            } else {
+                passInput.setAttribute("type", "password");
+                showPassButton.innerHTML = "<i class='fas fa-eye'></i>";
+                showed = false;
+            }
+                
+        })
+
+
+        function startingDownload() {
+            document.getElementById("download-error__msg").innerHTML = "";
+
+            document.getElementById("download-modal-button").setAttribute("disabled", "");
+            document.getElementById("starting-download-msg").style.display = "block";
+        }
+
+
+        function responseHasArrived() {
+            document.getElementById("download-error__msg").innerHTML = "";
+
+            document.getElementById("starting-download-msg").style.display = "none";
+            document.getElementById("download-modal-button").removeAttribute("disabled");
+
+            document.getElementsByClassName("btn-close").forEach(element => {
+                element.click();
+            })
+        }
+    }
+</script>
+
+{% include "components/cookies_consent.html" %}
+{% endblock %}

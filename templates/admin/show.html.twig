@@ -1,0 +1,94 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block section %}
+    <a href="{{ path('admin_index') }}"><i class="fas fa-arrow-left fa-3x text-success"></i></a>
+
+    <div class="text-center mb-4">
+        <div class="profile-container__photo mb-4" style="background-image: url({{ asset('media/admins/' ~ admin.image) }});"></div>
+        <p class="m-0">{{ admin.name }} {{ admin.firstname }}</p>
+
+        {% if edit == false %}
+            <a href="{{ path('admin_show', {'id': admin.id, edit: true}) }}" class="edit-button">Editar</a>
+        {% endif %}
+
+        {% if edit %}
+            <a href="{{ path('admin_show', {'id': admin.id}) }}" class="edit-button">Ver información usuario</a>
+        {% endif %}
+    </div>
+
+    {% if formError is defined %}
+    <div class="py-2 px-4 bg-danger text-white my-5" style="border-left: 5px #A80000 solid; font-size: 0.8em;">
+        <p class="m-0">{{ formError }}</p>
+    </div>
+    {% endif %}
+
+    <table class="table show-table">
+        <tbody>
+            <form action="{{ path('admin_edit', {id: admin.id}) }}" method="post" class="edit-form" enctype="multipart/form-data">
+                <tr>
+                    <th>Imagen</th>
+                    <td {% if edit %}class="d-none"{% endif %} class="text-end">{{ admin.image }}</td>
+                    <td {% if edit == false %}class="d-none"{% endif %} class="input-field text-end"><input type="file" name="image" id="image"></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td {% if edit %}class="d-none"{% endif %} class="text-end">{{ admin.email }}</td>
+                    <td {% if edit == false %}class="d-none"{% endif %} class="input-field text-end"><input type="text" name="email" id="email" value="{{ admin.email }}"></td>
+                </tr>
+                {% if edit %}
+                <tr>
+                    <th>Contraseña antigua</th>
+                    <td class="input-field text-end"><input type="password" name="last-password" id="last-password"></td>
+                </tr>
+                <tr>
+                    <th>Contraseña nueva</th>
+                    <td class="input-field text-end"><input type="password" name="new-password" id="new-password"></td>
+                </tr>
+                <tr>
+                    <th>Repetir contraseña nueva</th>
+                    <td class="input-field text-end"><input type="password" name="repeat-password" id="repeat-password"></td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th>Roles</th>
+                    <td class="text-end">{{ admin.roles ? admin.roles|json_encode : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <td {% if edit %}class="d-none"{% endif %} class="text-end">{{ admin.name }}</td>
+                    <td {% if edit == false %}class="d-none"{% endif %} class="input-field text-end"><input type="text" name="name" id="name" value="{{ admin.name }}"></td>
+                </tr>
+                <tr>
+                    <th>Primer apellido</th>
+                    <td {% if edit %}class="d-none"{% endif %} class="text-end">{{ admin.firstname }}</td>
+                    <td {% if edit == false %}class="d-none"{% endif %} class="input-field text-end"><input type="text" name="firstname" id="firstname" value="{{ admin.firstname }}"></td>
+                </tr>
+                <tr>
+                    <th>Fecha de registro</th>
+                    <td class="text-end">{{ admin.creationDate ? admin.creationDate|date('d-m-Y / H:i') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Activo</th>
+                    <td class="text-end">
+                        {{ admin.isActive ? 'Si' : 'No' }}
+                        {% if admin.isActive %}
+                            <a href="{{ path('admin_disable', {'id': admin.id}) }}"><i class="fas fa-user-slash"></i></a>
+                        {% else %}
+                            <a href="{{ path('admin_enable', {'id': admin.id}) }}"><i class="fas fa-user text-success"></i></a>
+                        {% endif %}
+                    </td>
+                </tr>
+
+                {% if edit == true %}
+                <tr>
+                    <td style="border: none;"><input type="submit" value="Enviar" class="btn btn-success"></td>
+                </tr>
+                {% endif %}
+            </form>
+        </tbody>
+    </table>
+
+    {# {{ include('admin/_delete_form.html.twig') }} #}
+{% endblock %}

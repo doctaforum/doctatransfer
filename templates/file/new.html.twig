@@ -1,0 +1,68 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Subir archivo{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('assets/css/upload-file.css') }}">
+{% endblock %}
+
+{% block javascriptInLine %}
+    <script>
+        $(document).ready(() => {
+            document.getElementById("navbar__create-file").classList.add("active");
+
+            let expirationDateInput = document.getElementById("file_expiration_date");
+
+            document.getElementById("file_set_expiration_date_0").addEventListener("click", () => {
+                expirationDateInput.style.display = "none";
+                expirationDateInput.removeAttribute("required");
+            });
+
+            document.getElementById("file_set_expiration_date_1").addEventListener("click", () => {
+                expirationDateInput.style.display = "block";
+                expirationDateInput.setAttribute("required", "");
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block section %}
+    <div class="center-container container-fluid pt-0">
+        <div class="section-top-header-page d-flex justify-content-start align-items-center mb-5">
+            <a href="{{ path('file_index') }}" class="section-top-header-page__return-button"><i class="fas fa-chevron-circle-left fa-2x"></i></a>
+
+            <h1 class="center-container__title px-3">Subir archivo</h1>
+        </div>
+
+        <div>
+            {{ include('file/_form.html.twig') }}
+        </div>
+    </div>
+
+    <script>
+        var uploadField = document.getElementById("file_path");
+
+        uploadField.onchange = function() {
+            let totalSize = 0;
+
+            this.files.forEach(file => {
+                totalSize += file.size;
+            });
+
+            if(totalSize > 1610612736){
+                var element = document.createElement("div");
+
+                element.innerHTML = "<p id='max-size__msg-error' class='text-danger m-0'>El tamaño máximo permitido es 1.5GB</p>";
+                uploadField.before(element);
+
+                setTimeout(() => {
+                    if (document.getElementById('max-size__msg-error')) document.getElementById('max-size__msg-error').remove();
+                }, 10000);
+
+                this.value = "";
+            };
+        };
+    </script>
+{% endblock %}

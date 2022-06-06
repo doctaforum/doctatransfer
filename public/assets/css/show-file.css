@@ -1,0 +1,136 @@
+.center-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#copy-button {
+    height: 35px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 2px #4a4a4a;
+    border-radius: 3px;
+    transition: 0.2s ease-in-out;
+    margin-left: 15px;
+}
+
+#copy-button:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 10px #d8d8d8;
+    background-color: #ffffff1a;
+}
+
+.show-pass:hover, .copy-pass:hover {
+    cursor: pointer;
+    color: #9b9b1b !important;
+}
+
+.info-container {
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px #cecece;
+    border-radius: 5px 0 0 5px;
+    font-size: 0.9em;
+}
+
+.file-url {
+    background-color: #ffffff2a;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2px #4a4a4a;
+    padding: 5px 10px;
+}
+
+.file-url > a, .file-url > a:link, .file-url > a:visited {
+    color: #0040ff;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+}
+
+.info-row__title {
+    margin-right: 10px;
+}
+
+.popover {
+    font-size: 0.8em;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.download-file__description {
+    height: 135px;
+    overflow-y: scroll;
+    padding-right: 5px;
+}
+
+.download-file__description::-webkit-scrollbar {
+    width: 0.3em;
+}
+
+.download-file__description::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 3px rgba(255, 255, 255, 1);
+}
+
+.download-file__description::-webkit-scrollbar-thumb {
+    background-color: #707070;
+    border-radius: 10px;
+    /*outline: 1px solid slategrey;*/
+}
+
+.download-file__complete-description {
+    display: none;
+}
+
+#download-link {
+    display: inline;
+    word-break: break-word;
+}
+
+.read-more {
+    color: rgb(78, 78, 78);
+    cursor: pointer;
+}
+
+.file-list {
+    font-size: 0.75em;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 5px #bcbcbc;
+    border: #2a2b2e4f 3px double;
+}
+
+.file-list__content {
+    overflow-y: scroll;
+    height: 280px;
+}
+
+.file-list__content::-webkit-scrollbar {
+    width: 0.3em;
+    border-radius: 10px;
+}
+
+.file-list__content::-webkit-scrollbar-track {
+    background-color: inherit;
+}
+
+.file-list__content::-webkit-scrollbar-thumb {
+    background-color: #707070;
+    border-radius: 10px;
+}
+
+
+@media (max-width: 991.5px) {
+    .info-container {
+        border-radius: 5px 5px 0 0;
+    }
+    
+    .file-list__content {
+        overflow-y: scroll;
+        height: 100px;
+    }
+}
