@@ -119,7 +119,7 @@ class ClientController extends AbstractController
         $path = "media/transfer_files/" . $file->getPath();
 
         $zip = new CompressFileHelper($path);
-        $response = $zip->decompressFile($password);
+        $response = $zip->decompressFile($password, "media/transfer_files/tmp");
         $zip->closeZip();
 
         if (!$response['success']) return $this->json($response);

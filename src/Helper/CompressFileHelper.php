@@ -2,15 +2,14 @@
 
 namespace App\Helper;
 
-use Exception;
 use ZipArchive;
+use Exception;
 
 class CompressFileHelper {
 
     private $zipFile;
-    private static $folder = 'media/transfer_files/';
-    private static $tmpFolder = "media/transfer_files/tmp";
     private $path;
+    private $size;
 
     public function __construct(string $path)
     {
@@ -24,18 +23,21 @@ class CompressFileHelper {
     }
     
 
-    public static function compressFile($file, $compressedFileName, $path, $password = null)
+    /**
+     * Compress one file into a new or existent .zip file
+     */
+    public static function compressFile($file, string $fileName, string $compressFolderPath, string $zipName, string $password = null)
     {
         $zip = new ZipArchive();
 
-        $zip->open(CompressFileHelper::$folder . $compressedFileName, \ZipArchive::CREATE);
+        if (! $zip->open($compressFolderPath . "/" . $zipName, \ZipArchive::CREATE)) return new Exception("Directory wasn't found");
 
         if ($password) $zip->setPassword($password);
 
         $content = file_get_contents($file->getRealPath());
 
-        $zip->addFromString($path, $content);
-        $zip->setEncryptionName($path, \ZipArchive::EM_AES_256);
+        $zip->addFromString($fileName, $content);
+        $zip->setEncryptionName($fileName, \ZipArchive::EM_AES_256);
 
         $zip->close();
 
@@ -43,17 +45,23 @@ class CompressFileHelper {
     }
 
 
-    public function decompressFile($password)
+    /**
+     * Decompress one .zip file into a choosen directory
+     */
+    public function decompressFile($password = "", string $decompressDirectoryPath)
     {
         $zip = $this->zipFile;
 
         if ($zip->setPassword($password)) {
-            if (! $zip->extractTo(CompressFileHelper::$tmpFolder)) return ["success" => false, "msg" => "Tmp folder wasn't found"];
+            if (! $zip->extractTo($decompressDirectoryPath)) return ["success" => false, "msg" => "Tmp folder wasn't found"];
             else return ["success" => true, "fileNames" => $this->readCompressFileNames()];
         } else return ["success" => false, "msg" => "Contraseña incorrecta"];
     }
 
 
+    /**
+     * Return all file names into .zip file
+     */
     public function readCompressFileNames()
     {
         $zip = $this->zipFile;
@@ -67,6 +75,9 @@ class CompressFileHelper {
     }
 
 
+    /**
+     * Close the zip used
+     */
     public function closeZip()
     {
         $this->zipFile->close();
@@ -89,4 +100,12 @@ class CompressFileHelper {
         return $this->path;
     }
 
+
+    /**
+     * Get the value of size
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
 }

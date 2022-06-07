@@ -50,8 +50,7 @@ class FileHelper {
     public function loadCompressedFile($files, $slugger, $password) {
         if ($files) {
             $folderName = ResourceManager::createRandomDirByDate("media/transfer_files/");
-
-            $newFilename = $folderName . '/archivos.zip';
+            $zipName = '/archivos.zip';
 
             foreach ($files as $file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -59,11 +58,11 @@ class FileHelper {
 
                 $completeFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
 
-                CompressFileHelper::compressFile($file, $newFilename, $completeFilename, $password);
+                CompressFileHelper::compressFile($file, $completeFilename, "media/transfer_files/", $folderName . $zipName, $password);
             }
 
-            return $newFilename;
+            return $folderName . $zipName;
         }
     }
-
+    
 }
